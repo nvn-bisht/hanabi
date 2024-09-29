@@ -127,3 +127,36 @@ export const getConsumetHomeData = async ({
 
   return combinedData;
 };
+
+///// ANIME EPISODES FUNCTION /////
+export async function fetchAnimeEpisodes({
+  animeId,
+  provider = "zoro",
+  dub = false,
+}: {
+  animeId: string;
+  provider: string;
+  dub?: boolean;
+}) {
+  const params = new URLSearchParams({ provider, dub: dub ? "true" : "false" });
+  const url = `${BASE_URL}meta/anilist/episodes/${animeId}?${params.toString()}`;
+  const cacheKey = generateCacheKey(
+    "animeEpisodes",
+    animeId,
+    provider,
+    dub ? "dub" : "sub"
+  );
+
+  return fetchData(url, animeEpisodesCache, cacheKey);
+}
+
+export async function fetchAnimeStreamingLinks({
+  episodeId,
+}: {
+  episodeId: string;
+}) {
+  const url = `${BASE_URL}meta/anilist/watch/${episodeId}`;
+  const cacheKey = generateCacheKey("animeStreamingLinks", episodeId);
+
+  return fetchData(url, videoSourcesCache, cacheKey);
+}

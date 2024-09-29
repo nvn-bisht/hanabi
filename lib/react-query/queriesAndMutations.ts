@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "./queryKeys";
 import {
   fetchAnimeData,
+  fetchAnimeEpisodes,
   fetchAnimeInfo,
   getConsumetHomeData,
 } from "./queryFunctions";
@@ -48,5 +49,20 @@ export const useFetchAnimeData = ({
   return useQuery({
     queryKey: [QUERY_KEYS.GET_ANIME_INFO],
     queryFn: () => fetchAnimeData(animeId, provider),
+  });
+};
+
+//QUERY FOR ANIME EPISODES
+
+export const useFetchAnimeEpisodes = ({
+  animeId,
+  provider = "gogoanime",
+}: {
+  animeId: string;
+  provider?: string;
+}) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.FETCH_ANIME_EPISODES],
+    queryFn: () => fetchAnimeEpisodes({ animeId, provider }),
   });
 };
